@@ -1,4 +1,5 @@
 import React from 'react';
+import Swal from 'sweetalert2'
 
 const AddEventForm = () => {
     const handleSubmit = event => {
@@ -9,6 +10,29 @@ const AddEventForm = () => {
         const description = form.description.value;
         const banner = form.banner.value;
         console.log(title, date, description, banner);
+        const addevent = { title, date, description, banner };
+        fetch('http://localhost:5000/events', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(addevent)
+        })
+            .then(res => res.json())
+            .then(date => {
+                console.log(date);
+                if (date.insertedId) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    form.reset();
+                }
+            })
     }
     return (
         <div className='ml-[31px]'>
