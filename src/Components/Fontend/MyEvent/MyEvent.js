@@ -8,11 +8,17 @@ const MyEvent = () => {
     const [bookings, setBOokings] = useState([]);
     const url = `http://localhost:5000/registers?email=${user?.email}`;
     useEffect(() => {
-        fetch(url)
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('register-user')}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setBOokings(data);
                 console.log(data);
+
             })
     }, [url])
 
