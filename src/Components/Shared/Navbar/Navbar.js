@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assests/logos/Group 1329.png';
+import { AuthContext } from '../../../AuthProvider/AuthProvider';
+import { BiUserCircle } from 'react-icons/bi';
 
 
 const Navbar = () => {
+    const { authlogOut, user } = useContext(AuthContext);
     const items = <>
         <li><Link to='/'>Home</Link></li>
         <li><Link>Donation</Link></li>
         <li><Link to='/addevent'>Event</Link></li>
         <li><Link>Blog</Link></li>
+        <li><Link to='/myevent'>My Event</Link></li>
+
 
 
     </>
+
+
+    const handleLogOut = () => {
+        authlogOut()
+            .then(() => [])
+            .catch(error => console.error(error));
+    }
     return (
         <div>
             <div className="navbar bg-base-100">
@@ -27,14 +39,23 @@ const Navbar = () => {
                     </div>
                     <img className='w-[200px] h-[60px]' src={logo} alt="" />
                 </div>
-                <div className="navbar-center hidden lg:flex">
+                <div className="navbar-center hidden lg:flex mr-3">
                     <ul className="menu menu-horizontal px-1">
                         {items}
                     </ul>
                 </div>
                 <div className="navbar-end text-white">
-                    <a className="btn mr-[12px] bg-[#3F90FC] btn-sm">Register</a>
-                    <a className="btn bg-[#434141] btn-sm text-white">Admin</a>
+                    {
+                        user ? <button onClick={handleLogOut} className="btn mr-[12px] bg-[#3F90FC] btn-sm">Logout</button>
+                            : <Link to='/login'><button className="btn mr-[12px] bg-[#3F90FC] btn-sm">Login</button></Link>}
+
+                    <a className="btn bg-[#434141] btn-sm text-white mr-3">Admin</a>
+                    {
+                        user && user.photoURL ? <img className='rounded-full w-[32px] h-[32px]' src={user.photoURL}></img>
+                            :
+                            <BiUserCircle className='text-2xl'></BiUserCircle>
+                    }
+
                 </div>
             </div>
         </div>

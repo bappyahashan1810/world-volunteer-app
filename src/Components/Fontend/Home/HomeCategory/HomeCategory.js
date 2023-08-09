@@ -12,7 +12,7 @@ const HomeCategory = () => {
                 setCategory(data);
             })
     }, [])
-    console.log(category);
+
 
 
 
